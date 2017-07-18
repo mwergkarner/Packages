@@ -141,6 +141,134 @@ namespace Ranorex.AutomationHelpers.UserCodeCollections
         public static void WordCompare()
         {
             // TODO: Implement/specify
+            /*
+public static void FILE_compareWithWord(string file1, string file2, string unmask, string StartFrom, string CompareTo) {
+    iDeletions=0;
+    iInsertions=0;
+
+    file1 = getPathForFile(file1);
+    file2 = getPathForFile(file2);
+
+
+    string sFile1Temp=Path.GetDirectoryName(file1)+@"\"+Path.GetFileNameWithoutExtension(file1)+".temp."+Path.GetExtension(file1);
+    //string sFile2Temp=Path.GetDirectoryName(file2)+@"\"+Path.GetFileNameWithoutExtension(file2)+".temp."+Path.GetExtension(file2);
+
+
+    string sFileContent = File.ReadAllText(file1);
+    if (unmask.Length>0) {
+        sFileContent = Regex.Replace(sFileContent, unmask, "XXXX");
+    }
+    File.WriteAllText(sFile1Temp, sFileContent);
+
+    Application app = new Application();
+    app.Visible = false;
+
+    Document objDocument1 = app.Documents.Open(sFile1Temp);
+    Document objDocument2 = app.Documents.Open(file2);
+
+    app.CompareDocuments(objDocument1,objDocument2 , WdCompareDestination.wdCompareDestinationNew, WdGranularity.wdGranularityWordLevel, false, true, true, true, true, true, true, true, true, true, "Ranorex compare", false);
+
+    objDocument1.Close();
+    objDocument2.Close();
+
+
+    int iStartFrom;
+    if (!Int32.TryParse(StartFrom, out iStartFrom)) {
+        iStartFrom=-1;
+    }
+
+
+    int pageNumber=9999;
+
+    if (CompareTo.Length>0) {
+        Range range= app.ActiveDocument.Content;
+        range.Find.Execute(CompareTo,false, true, false, false, false, true, 0, false, "",0);
+        if (range.Text.Equals(CompareTo)) {
+
+            object oPageNumber=range.Information[WdInformation.wdActiveEndAdjustedPageNumber];
+            pageNumber= Int32.Parse(oPageNumber.ToString());
+        }
+    }
+
+
+    FILE_count (app.ActiveDocument.Revisions, unmask,iStartFrom, pageNumber, true);
+    Section section = app.ActiveDocument.Sections.First;
+
+    foreach (Microsoft.Office.Interop.Word.HeaderFooter aHeaderFooter in section.Headers) {
+        FILE_count(aHeaderFooter.Range.Revisions, unmask, iStartFrom, pageNumber, false);
+    }
+
+    foreach (Microsoft.Office.Interop.Word.HeaderFooter aHeaderFooter in section.Headers) {
+        FILE_count(aHeaderFooter.Range.Revisions, unmask, iStartFrom, pageNumber, false);
+    }
+
+    if (File.Exists(sFile1Temp)) {
+        File.Delete(sFile1Temp);
+    }
+
+    if (iInsertions>0 || iDeletions>0) {
+        string sResultFile=Path.GetDirectoryName(file1)+@"\"+Path.GetFileNameWithoutExtension(file1)+".difference.docx";
+        Ranorex.Report.Failure("Differences found in comparison between '"+file1+"' and '"+file2+"'. Found "+iDeletions+" deletions and "+iInsertions+" insertions. Diff file: '"+sResultFile+"'");
+        app.ActiveDocument.TrackRevisions=false;
+        app.ActiveDocument.ShowRevisions=false;
+        app.ActiveDocument.PrintRevisions=false;
+
+        app.ActiveDocument.Protect(WdProtectionType.wdAllowOnlyReading);
+        app.ActiveDocument.SaveAs2(sResultFile);
+    } else {
+        Ranorex.Report.Success("No differences found in comparison between '"+file1+"' and '"+file2+"'.");
+    }
+
+    app.ActiveDocument.Close(false);
+    app.Quit();
+}
+
+
+private static void FILE_count (Revisions revisions, string unmask, int startFrom, int pagenumber, bool content) {
+
+    foreach (Revision r in revisions) {
+        bool accepted=false;
+        string sRangeText=r.Range.Text;
+        if (r.Type== WdRevisionType.wdRevisionDelete) {
+            object oPageNumber=r.Range.Information[WdInformation.wdActiveEndAdjustedPageNumber];
+            int iActualPageNumber= Int32.Parse(oPageNumber.ToString());
+
+
+
+            if ((iActualPageNumber<=startFrom || iActualPageNumber>=pagenumber) && content) {
+                r.Range.HighlightColorIndex=WdColorIndex.wdGray50;
+                r.Accept();
+                accepted=true;
+            } else if ((!Regex.IsMatch(sRangeText, ".*XXXX.*")) || unmask.Length==0) {
+                iDeletions++;
+                Ranorex.Report.Info("Deletion", sRangeText);
+            } else {
+                r.Accept();
+                accepted=true;
+            }
+        }
+        if (!accepted) {
+            if (r.Type== WdRevisionType.wdRevisionInsert) {
+                object oPageNumber=r.Range.Information[WdInformation.wdActiveEndAdjustedPageNumber];
+                int iActualPageNumber= Int32.Parse(oPageNumber.ToString());
+
+                if ((iActualPageNumber<=startFrom || iActualPageNumber>=pagenumber) && content) {
+                    r.Range.HighlightColorIndex=WdColorIndex.wdGray50;
+                    r.Accept();
+                    accepted=true;
+                } else if (!Regex.IsMatch(sRangeText, unmask) || unmask.Length==0) {
+                    iInsertions++;
+                    Ranorex.Report.Info("Insertion", sRangeText);
+                } else {
+                    r.Range.HighlightColorIndex=WdColorIndex.wdGray50;
+                    r.Accept();
+                    accepted=true;
+                }
+            }
+        }
+    }
+}
+*/
             throw new NotImplementedException();
         }
 
